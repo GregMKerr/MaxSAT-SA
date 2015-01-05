@@ -182,7 +182,6 @@ bool Feasible(std::vector<bool> state, inst instance)//check if satisfied
 				inner = inner | state[instance.formula[i][j] - 1];
 			}
 		}
-		//printf("inner:%d\n", (int)inner);
 		outer = outer & inner;
 	}
 
@@ -201,9 +200,8 @@ void Repair(std::vector<bool> &state, inst instance)
 bool Accept(int weightDiff, int t)
 {
 	if (t == 0) return 0;
-	bool test = (double)rand() / RAND_MAX < exp((weightDiff)/t);
-	//printf("%d\n", (int)test);
-	return test;
+	bool isAccept = (double)rand() / RAND_MAX < exp((weightDiff)/t);
+	return isAccept;
 }
 
 //Simulated Annealing Algorithm
@@ -264,7 +262,7 @@ int SimAnnealWrapper(std::vector<inst> instances, std::vector<soln> &solutions, 
 			progressFile.open("progress.csv");
 		}
 		int cost = SimAnneal(curInst, params);
-		//printf("%d\n", cost);
+		printf("%d\n", cost);
 		if (params.saveProgress)
 		{
 			progressFile.close();
@@ -309,18 +307,7 @@ int main(int argc, const char** argv)
 
 	GetInstances(instances, argv[1], verbose);
 
-	// std::vector<bool> v;
-	// v.push_back(1);
-	// v.push_back(0);
-	// v.push_back(0);
-	// v.push_back(1);
-	// bool test = Feasible(v, instances[0]);
-	// printf("%d\n", (int)test);
-
-	for (int i = 0; i < 5; ++i)
-	{
-		SimAnnealWrapper(instances, solutions, params);
-	}
+	SimAnnealWrapper(instances, solutions, params);
 
 	instances.clear();
 	solutions.clear();
